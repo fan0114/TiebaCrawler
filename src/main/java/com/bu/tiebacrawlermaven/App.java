@@ -17,7 +17,7 @@ public class App {
     public static int dummyNum;
 
     public static void analyze(String url) throws IOException, InterruptedException {
-        Document doc = Jsoup.connect(url).userAgent(dummy[dummyNum]).header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027").header("Connection", "keep-alive").timeout(10000).get();
+        Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", dummy[dummyNum]).header("Connection", "keep-alive").timeout(10000).get();
         String title = doc.title();
         System.out.println(title);
         Elements sublinks = doc.getElementsByClass("j_th_tit");
@@ -90,10 +90,10 @@ public class App {
 //        }
 //    }
     public static void main(String[] args) throws InterruptedException, IOException {
-        dummy=new String[3];
-        dummy[0]="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:21.0) Gecko/20100101 Firefox/21.0";
-        dummy[1]="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17";
-        dummy[2]="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+        dummy=new String[2];
+        dummy[0]="TIEBAUID=cb23caae14130a0d384a57f1; TIEBA_USERTYPE=8e3276f7975830f620f52151; wise_device=0; BAIDUID=388C9F5B525D0E843AB723B2C5FE6230:FG=1; BDUT=ymj52AD1D4FFBCA4BBEDB8AC26FD63EB8F0013a2f0adf3a0; bdshare_firstime=1353881763159; interestSmiley=hide";
+        dummy[1]="BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027";
+
 
         System.out.println("Hello World! " + System.getProperty("user.dir"));
         int startPage = 0;
