@@ -99,9 +99,11 @@ public class App {
             maxPages = Integer.parseInt(args[1]);
         }
         
-        String mainURL = "http://tieba.baidu.com/f?kw=%C8%CB%B2%CE%C4%EF&tp=0&pn=";
+        String mainURL;
         if (args.length >= 3) {
             mainURL = args[2]+"&tp=0&pn=";
+        }else{
+            return;
         }
         for (int i = startPage; i < startPage + maxPages; i++) {
             String tempURL = mainURL + (i * pageSize);
