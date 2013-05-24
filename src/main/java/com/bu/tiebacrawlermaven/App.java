@@ -45,10 +45,10 @@ public class App {
             Thread.sleep(1000);
         }
 
-//        // join the threads
-//        for (int j = 0; j < count; j++) {
-//            threads[j].join();
-//        }
+        // join the threads
+        for (int j = 0; j < count; j++) {
+            threads[j].join();
+        }
     }
 
 //    public static void downloadImg(String url, final File file) throws IOException {
