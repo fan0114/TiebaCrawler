@@ -18,6 +18,13 @@ public class App {
 
     public static void analyze(String url) throws IOException, InterruptedException {
         Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", dummy[dummyNum]).header("Connection", "keep-alive").timeout(10000).get();
+        System.out.println("URI: " + doc.baseUri());
+        while (doc.baseUri().contains("ressafe")) {
+            System.out.println("REDO!!");
+            Thread.sleep(1000);
+            doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", dummy[dummyNum]).header("Connection", "keep-alive").timeout(10000).get();
+            System.out.println("URI: " + doc.baseUri());
+        }
         String title = doc.title();
         System.out.println(title);
         Elements sublinks = doc.getElementsByClass("j_th_tit");
@@ -27,7 +34,7 @@ public class App {
             Element sublink = sublinks.get(i);
             if (sublink.hasAttr("href")) {
                 String suburl = "http://tieba.baidu.com" + sublink.attr("href") + "?see_lz=1";
-                threads[count] = new CrawlerThread(suburl, pathname,dummy,dummyNum);
+                threads[count] = new CrawlerThread(suburl, pathname, dummy, dummyNum);
                 count++;
             }
         }
@@ -35,7 +42,7 @@ public class App {
         // start the threads
         for (int j = 0; j < count; j++) {
             threads[j].start();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }
 
 //        // join the threads
@@ -90,9 +97,9 @@ public class App {
 //        }
 //    }
     public static void main(String[] args) throws InterruptedException, IOException {
-        dummy=new String[2];
-        dummy[0]="TIEBAUID=cb23caae14130a0d384a57f1; TIEBA_USERTYPE=8e3276f7975830f620f52151; wise_device=0; BAIDUID=388C9F5B525D0E843AB723B2C5FE6230:FG=1; BDUT=ymj52AD1D4FFBCA4BBEDB8AC26FD63EB8F0013a2f0adf3a0; bdshare_firstime=1353881763159; interestSmiley=hide";
-        dummy[1]="BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027";
+        dummy = new String[2];
+        dummy[0] = "TIEBAUID=cb23caae14130a0d384a57f1; TIEBA_USERTYPE=8e3276f7975830f620f52151; wise_device=0; BAIDUID=388C9F5B525D0E843AB723B2C5FE6230:FG=1; BDUT=ymj52AD1D4FFBCA4BBEDB8AC26FD63EB8F0013a2f0adf3a0; bdshare_firstime=1353881763159; interestSmiley=hide";
+        dummy[1] = "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027";
 
 
         System.out.println("Hello World! " + System.getProperty("user.dir"));
@@ -104,19 +111,19 @@ public class App {
             startPage = Integer.parseInt(args[0]);
             maxPages = Integer.parseInt(args[1]);
         }
-        
+
         String mainURL;
         if (args.length >= 3) {
-            mainURL = args[2]+"&tp=0&pn=";
-        }else{
+            mainURL = args[2] + "&tp=0&pn=";
+        } else {
             System.err.println("insufficient argument");
             return;
         }
-        dummyNum=0;
+        dummyNum = 0;
         if (args.length >= 4) {
             dummyNum = Integer.parseInt(args[3]);
         }
-        
+
         for (int i = startPage; i < startPage + maxPages; i++) {
             String tempURL = mainURL + (i * pageSize);
             System.out.println("TempURL: " + tempURL);

@@ -61,6 +61,13 @@ public class CrawlerThread extends Thread {
         Document doc = null;
         try {
             doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", dummy[dummyNum]).header("Connection", "keep-alive").timeout(10000).get();
+            System.out.println("URI: " + doc.baseUri());
+            while (doc.baseUri().contains("ressafe")) {
+                System.out.println("REDO!!");
+                Thread.sleep(1000);
+                doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", dummy[dummyNum]).header("Connection", "keep-alive").timeout(10000).get();
+                System.out.println("URI: " + doc.baseUri());
+            }
         } catch (IOException ex) {
             System.err.println("ERROR connect to " + url);
             Logger.getLogger(CrawlerThread.class.getName()).log(Level.SEVERE, null, ex);
