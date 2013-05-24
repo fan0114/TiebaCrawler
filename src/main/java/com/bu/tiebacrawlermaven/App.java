@@ -92,7 +92,6 @@ public class App {
         int startPage = 0;
         int maxPages = 10;
         int pageSize = 50;
-        int postNum = 0;
         pathname = System.getProperty("user.dir") + "/";
         if (args.length >= 2) {
             startPage = Integer.parseInt(args[0]);
@@ -103,6 +102,7 @@ public class App {
         if (args.length >= 3) {
             mainURL = args[2]+"&tp=0&pn=";
         }else{
+            System.err.println("insufficient argument");
             return;
         }
         for (int i = startPage; i < startPage + maxPages; i++) {
@@ -110,7 +110,6 @@ public class App {
             System.out.println("TempURL: " + tempURL);
             analyze(tempURL);
         }
-        String url = "http://tieba.baidu.com/p/2257862327?see_lz=1";
 //        try {
 //            CrawlerThread ct = new CrawlerThread("", pathname);
 //            ct.craw(url);
