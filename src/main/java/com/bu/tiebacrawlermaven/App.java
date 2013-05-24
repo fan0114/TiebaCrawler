@@ -35,12 +35,13 @@ public class App {
         // start the threads
         for (int j = 0; j < count; j++) {
             threads[j].start();
+            Thread.sleep(2000);
         }
 
-        // join the threads
-        for (int j = 0; j < count; j++) {
-            threads[j].join();
-        }
+//        // join the threads
+//        for (int j = 0; j < count; j++) {
+//            threads[j].join();
+//        }
     }
 
 //    public static void downloadImg(String url, final File file) throws IOException {
