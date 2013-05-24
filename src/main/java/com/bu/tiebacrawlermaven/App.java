@@ -13,9 +13,11 @@ import org.jsoup.select.Elements;
 public class App {
 
     public static String pathname = "/Users/fan0114/Desktop/tieba/";
+    public static String[] dummy;
+    public static int dummyNum;
 
     public static void analyze(String url) throws IOException, InterruptedException {
-        Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:21.0) Gecko/20100101 Firefox/21.0").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027").header("Connection", "keep-alive").timeout(10000).get();
+        Document doc = Jsoup.connect(url).userAgent(dummy[dummyNum]).header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027").header("Connection", "keep-alive").timeout(10000).get();
         String title = doc.title();
         System.out.println(title);
         Elements sublinks = doc.getElementsByClass("j_th_tit");
@@ -25,7 +27,7 @@ public class App {
             Element sublink = sublinks.get(i);
             if (sublink.hasAttr("href")) {
                 String suburl = "http://tieba.baidu.com" + sublink.attr("href") + "?see_lz=1";
-                threads[count] = new CrawlerThread(suburl, pathname);
+                threads[count] = new CrawlerThread(suburl, pathname,dummy,dummyNum);
                 count++;
             }
         }
@@ -87,6 +89,10 @@ public class App {
 //        }
 //    }
     public static void main(String[] args) throws InterruptedException, IOException {
+        dummy=new String[3];
+        dummy[0]="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:21.0) Gecko/20100101 Firefox/21.0";
+        dummy[1]="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17";
+        dummy[2]="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
 
         System.out.println("Hello World! " + System.getProperty("user.dir"));
         int startPage = 0;
@@ -105,6 +111,11 @@ public class App {
             System.err.println("insufficient argument");
             return;
         }
+        dummyNum=0;
+        if (args.length >= 4) {
+            dummyNum = Integer.parseInt(args[3]);
+        }
+        
         for (int i = startPage; i < startPage + maxPages; i++) {
             String tempURL = mainURL + (i * pageSize);
             System.out.println("TempURL: " + tempURL);

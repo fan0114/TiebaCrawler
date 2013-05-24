@@ -29,10 +29,14 @@ public class CrawlerThread extends Thread {
 
     public final String pathname;
     private final String url;
+    private final String[] dummy;
+    private final int dummyNum;
 
-    public CrawlerThread(String url, String pathname) {
+    public CrawlerThread(String url, String pathname, String[] dummy, int dummyNum) {
         this.url = url;
         this.pathname = pathname;
+        this.dummy = dummy;
+        this.dummyNum = dummyNum;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class CrawlerThread extends Thread {
         }
     }
 
-    public void craw(String url) throws IOException, InterruptedException{
+    public void craw(String url) throws IOException, InterruptedException {
 
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(
@@ -56,9 +60,9 @@ public class CrawlerThread extends Thread {
 
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:21.0) Gecko/20100101 Firefox/21.0").header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027").header("Connection", "keep-alive").timeout(10000).get();
+            doc = Jsoup.connect(url).userAgent(dummy[dummyNum]).header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").header("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").header("Cookie", "BAIDUID=31E93DADDE2FC23D2A1E25067B93BC32:FG=1; TIEBA_USERTYPE=51214246ee74a6c2730a7145; wise_device=0; bdshare_firstime=1354523435739; TIEBAUID=cb23caae14130a0d384a57f1; BDUT=tvlx31E93DADDE2FC23D2A1E25067B93BC3213baff187790; TB_OFRS=; BAIDUVERIFY=44AF71ADA5D170DAF890D893CF2A27B4E682AAA8D9382536B12DF3D826083BAECCD5F0DF5E0DDFD1F79FC7C829BB04BD66967E2F974F329590433A21073DAFDA4300:1369368624:43dfcf2f4a3b7027").header("Connection", "keep-alive").timeout(10000).get();
         } catch (IOException ex) {
-            System.err.println("ERROR connect to "+url);
+            System.err.println("ERROR connect to " + url);
             Logger.getLogger(CrawlerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         String title = doc.title();
